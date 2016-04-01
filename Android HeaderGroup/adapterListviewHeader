@@ -1,0 +1,89 @@
+package com.tulaconsultingsolutions.snapshop;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by Xavier on 3/31/2016.
+ */
+public class CategoryAdapter extends BaseExpandableListAdapter {
+    private final Context mContext;
+    private final Map<String, List<String>> mainList;
+    private final List<String> mTitles;
+    private final Map<String, Integer> mapIds;
+
+    public CategoryAdapter(Context context, Map<String, List<String>> listMap, List<String> titles, Map<String, Integer> mapIds) {
+        super();
+        this.mContext = context;
+        this.mainList = listMap;
+        this.mTitles = titles;
+        this.mapIds = mapIds;
+    }
+
+    @Override
+    public int getGroupCount() {
+        return mTitles.size();
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return mainList.get(mTitles.get(groupPosition)).size();
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return mTitles.get(groupPosition);
+    }
+
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return mainList.get(mTitles.get(groupPosition)).get(childPosition);
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return mapIds.get(mainList.get(mTitles.get(groupPosition)).get(childPosition));
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.single_product, parent, false);
+        TextView textView1 = (TextView) rowView.findViewById(R.id.productheader);
+        textView1.setText(getGroup(groupPosition).toString());
+        return rowView;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.single_product, parent, false);
+        TextView textView = (TextView) rowView.findViewById(R.id.product);
+        textView.setText(getChild(groupPosition, childPosition).toString());
+        return rowView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+}

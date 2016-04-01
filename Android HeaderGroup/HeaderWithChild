@@ -1,0 +1,44 @@
+ mCategoryCursor = ProductCategoryProvider.fetchAllCategories(this, search);
+            List<String> titles = new ArrayList<>();
+            Map<String, Integer> mapIds = new HashMap<>();
+            Map<String, List<String>> itemsWithTitle = new HashMap<>();
+
+            mParentCategoryCursor = ProductCategoryProvider.fetchParentCategory(getApplicationContext());
+            for (int position=0; position < mParentCategoryCursor.getCount(); position++) {
+
+                ProductCategoryProfile parent = ProductCategoryProvider.getProfileParent(mParentCategoryCursor, position);
+                String title = parent.getPname();
+                int id = parent.getParentId();
+                mCategoryCursor = ProductCategoryProvider.fetchAllCategory(this, id);
+                if (null != mCategoryCursor) {
+
+                    List<String> items = new ArrayList<>();
+                    for (int index=0; index < mCategoryCursor.getCount(); index++) {
+                        ProductCategoryProfile profile = ProductCategoryProvider.getProfile(mCategoryCursor, index);
+                        items.add(profile.getName());
+                        mapIds.put(profile.getName(), profile.getId());
+                    }
+                    itemsWithTitle.put(title, items);
+                    titles.add(title);
+                }
+            }
+            // Set the custom adapter to show the category icons
+            mCategoryAdapter = new CategoryAdapter(ShowCategoryListActivity.this, itemsWithTitle, titles, mapIds);
+            mSearchedCategoryListView.setAdapter(mCategoryAdapter);
+
+            mSearchedCategoryListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                    String parentName = mCategoryAdapter.getGroup(groupPosition).toString();
+                    String categoryName = mCategoryAdapter.getChild(groupPosition, childPosition).toString();
+                    int catId = (int) mCategoryAdapter.getChildId(groupPosition, childPosition);
+                    Log.d(TAG, "Selected Item = " + childPosition + " " + id);
+                    if (sProductCategorySelectedListener != null) {
+                        sProductCategorySelectedListener.onProductCategorySelected(childPosition, id);
+                        finish();
+                    }
+                    return false;
+                }
+            });
+        }
