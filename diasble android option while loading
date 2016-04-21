@@ -1,0 +1,11 @@
+public void displayProgressBar(){
+    progressBar = new SubProgressDialog(this);
+    progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    progressBar.setCancelable(false);
+    progressBar.setMessage(getString(R.string.authorizing));        
+    progressBar.show();   
+    new Thread(new Runnable() {
+      public void run() {
+      }
+       }).start();     
+}
