@@ -1,0 +1,19 @@
+ public static void showKeyboard(Context context, View view) {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.toggleSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+            view.requestFocus();
+        } catch (Exception ex) {
+        }
+    }
+
+ public static void hideKeyboard(Context context) {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(((Activity) context)
+                    .getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception ex) {
+        }
+    }
