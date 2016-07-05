@@ -1,0 +1,29 @@
+package com.developer.uthaya.uthayachat;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+public class TabActivity extends AppCompatActivity {
+private WebView webView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.tab_activity);
+        webView = (WebView) findViewById(R.id.forget_password_view);
+        webView.setWebViewClient(new MyWebViewClient());
+
+        String url = "http://www.google.com";
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(url);
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+    }
+}
