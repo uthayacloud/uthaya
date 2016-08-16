@@ -1,0 +1,17 @@
+{
+	 compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:1.0.1'
+}
+
+ KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        if(isOpen) {
+                            Image.setVisibility(View.GONE);
+                        } else {
+                            Image.setVisibility(View.VISIBLE);
+                        }
+                        // some code depending on keyboard visiblity status
+                    }
+                });
